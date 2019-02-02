@@ -5,9 +5,9 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\EventController;
 use App\User;
 use App\Event;
-use App\Http\Controllers\Controller; 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Profilecollection;
 use App\Http\Resources\ProfileResource;
 class ProfileController extends Controller
@@ -16,13 +16,13 @@ class ProfileController extends Controller
     {
         $user=User::all();
         return response()->json(Profilecollection::Collection($user));
-        
+
     }
 
     public function show($id)
-    {  
-       
-        $user=User::findOrFail($id);
+    {
+
+         $user=User::findOrFail($id);
         return new ProfileResource($user);
 
     }

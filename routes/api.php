@@ -29,3 +29,4 @@ Route::apiResource('events', 'EventController',['except' => ['index']]);
 });
 
 Route::apiResource('organisations','ProfileController');
+Route::get('/users/verify/{token}','API\UserController@verify')->name('verify');

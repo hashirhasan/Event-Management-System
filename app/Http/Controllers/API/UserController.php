@@ -21,10 +21,16 @@ public $successStatus = 200;
 
          if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
            $user= Auth::user();
-
+           if($user->verified==User::VERIFIED_USER)
+           {
             $success['token'] =  $user->createToken('MyApp')-> accessToken;
+            $success['id'] =$user->id;
             return response()->json(['success' => $success], $this->successStatus);
         }
+        else {
+            return response()->json(['data'=>'verify to login'], 200);
+        }
+    }
         else{
             return response()->json(['error'=>'Unauthorised'], 401);
         }
@@ -54,8 +60,8 @@ $input = $request->all();
         $input['verified']=User::UNVERIFIED_USER;
         $input['verificationtoken']=User::getverificationtoken();
         $user = User::create($input);
-        $success['token'] =  $user->createToken('MyApp')-> accessToken;
-        $success['id'] =  $user->id;
+        $success['message'] = "user registered,first verify ur acoount to login";
+
 return response()->json(['success'=>$success], $this->successStatus);
     }
 
@@ -123,6 +129,16 @@ return response()->json(['success'=>$success], $this->successStatus);
         //
     }
 
+    public function verify($token)
+    {
+        $user=User::where('verificationtoken',$token)->firstOrFail();
+        $user->verified=User::VERIFIED_USER;
+        $user->verificationtoken=null;
+        $user->save();
+        return response()->json( ["data"=>"the acount has been veried"],200);
+
+
+    }
 
 
 }

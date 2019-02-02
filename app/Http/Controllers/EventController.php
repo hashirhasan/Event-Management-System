@@ -5,12 +5,12 @@ use App\User;
 use App\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\EventCollection;
 use App\Http\Resources\EventResource;
 use App\Http\Requests\EventRequest;
 
-class EventController extends Controller 
+class EventController extends Controller
 {
     // public function __construct(){
     //     $this->middleware('auth:api')->except('index','show');
@@ -21,9 +21,9 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    { 
-        
-       
+    {
+
+
         return  EventCollection::collection(Event::all());
     }
 
@@ -35,7 +35,7 @@ class EventController extends Controller
     public function view($id)
     {
         $user=User::findOrFail($id);
-        
+
         return EventCollection::collection($user->events);
     }
 
@@ -55,9 +55,9 @@ class EventController extends Controller
         {
          $event->image=$request->file('image')->getClientOriginalName();
         $file=$request->file('image')->storeAs('upload',$event->image);
-        
+
         $event->image= Storage::url($file);
-        
+
         }
         else{
 
@@ -67,7 +67,7 @@ class EventController extends Controller
         $event->time=$request->time;
         $event->venue=$request->venue;
         $event->organiser=$request->organiser;
-       
+
         $event->save();
          return response()->json($event,201) ;
     }
@@ -93,14 +93,14 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-      
+
         if($request->hasFile('image'))
         {
          $request['image']=$request->file('image')->getClientOriginalName();
         $file=$request->file('image')->storeAs('upload',$event->image);
-        
+
     $request['image']= Storage::url($file);
-        
+
         }
         else{
 
@@ -127,9 +127,9 @@ if($event->user_id==$user->id)
 else{
     return 'u r not authorised';
 }
-        
+
     }
 
-   
- 
+
+
 }
