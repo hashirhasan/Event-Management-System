@@ -53,8 +53,8 @@ class EventController extends Controller
         $event->title=$request->title;
         if($request->hasFile('image'))
         {
-         $event->image=$request->file('image')->getClientOriginalName();
-        $file=$request->file('image')->storeAs('upload',$event->image);
+         $event->image_name=$request->file('image')->getClientOriginalName();
+        $file=$request->file('image')->storeAs('upload',$event->image_name);
 
         $event->image= Storage::url($file);
 
@@ -96,17 +96,24 @@ class EventController extends Controller
 
         if($request->hasFile('image'))
         {
-         $request['image']=$request->file('image')->getClientOriginalName();
-        $file=$request->file('image')->storeAs('upload',$event->image);
 
-    $request['image']= Storage::url($file);
+            $image_path=storage_path('app/public/upload/'.$event->image_name);
+            if(file_exists($image_path)){
+                @unlink($image_path);
+            }
+     $request['image_name']=$request->file('image')->getClientOriginalName();
+      $file=$request->file('image')->storeAs('upload',$request['image_name']);
+$event->image_name= $request['image_name'];
+ $event->image=Storage::url($file);
+     $event->save();
 
         }
         else{
-
+            $request['image_name'] =null;
             $request['image'] ="no file uploaded";
         }
-       $event->update($request->all());
+
+      $event->update($request->all());
        return response()->json($event,200);
     }
 
