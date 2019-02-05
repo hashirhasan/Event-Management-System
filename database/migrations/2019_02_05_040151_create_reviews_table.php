@@ -20,7 +20,7 @@ class CreateReviewsTable extends Migration
             $table->string('name');
             $table->integer('student_no')->unique();
             $table->integer('star');
-            $table->string('review',500);
+            $table->string('review',500)->nullable();
 
             $table->timestamps();
         });

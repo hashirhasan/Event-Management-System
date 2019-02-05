@@ -9,10 +9,15 @@ class Event extends Model
    protected $fillable=[
        'title','description','time','venue','organiser'
    ];
-   
+
    public function Users()
    {
        return $this->belongsTo('App\User');
+   }
+
+   public function reviews()
+   {
+       return $this->hasMany('App\Reviews');
    }
 }
 

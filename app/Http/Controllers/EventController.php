@@ -12,6 +12,10 @@ use App\Http\Requests\EventRequest;
 
 class EventController extends Controller
 {
+
+
+
+
     // public function __construct(){
     //     $this->middleware('auth:api')->except('index','show');
     // }
@@ -146,11 +150,9 @@ class EventController extends Controller
 $event->image_name= $request['image_name'];
  $event->image=Storage::url($file);
         }
-        else{
-            $request['image_name'] =null;
-            $request['image'] ="no file uploaded";
-        }
-        $event->date_of_event=$request['date_of_event'];
+        if(isset($request['date_of_event']))
+       { $event->date_of_event=$request['date_of_event'];
+       }
         $event->save();
       $event->update($request->all());
        return response()->json($event,200);
@@ -168,6 +170,21 @@ $event->image_name= $request['image_name'];
      $event=Event::where('date_of_event','>',date("Y-m-d",time()))->orderBy('updated_at','desc')->get();
      return EventCollection::collection($event);
     }
+
+
+
+
+
+
+
+
+
+    public function passed_events()
+    {
+     $event=Event::where('date_of_event','<',date("Y-m-d",time()))->orderBy('updated_at','desc')->get();
+     return EventCollection::collection($event);
+    }
+
 
 
 

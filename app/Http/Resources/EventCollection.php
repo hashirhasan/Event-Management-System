@@ -24,7 +24,10 @@ class EventCollection extends Resource
             "description"=>$this->description,
             "time"=> $this->time,
             "venue"=>$this->venue,
-            "organiser"=>$this->organiser
+            "organiser"=>$this->organiser,
+            'link'=>[
+                'show_more'=>route('events.show',$this->id)
+            ]
 
         ];
 

@@ -16,8 +16,9 @@ use Illuminate\Http\Request;
 
 
 Route::get('/events','EventController@index');
-Route::get('/upcoming_events','EventController@upcoming_events');
-// Route::put('/events/{event}','EventController@update')->name('events.update');
+Route::get('/upcoming_events','EventController@upcoming_events')->name('events.upcoming');
+Route::get('/events_passed_away','EventController@passed_events')->name('events.passed');
+Route::get('/events/{event}','EventController@show')->name('events.show');
 // Route::delete('/events/{event}','EventController@delete');
 Route::post('login', 'API\UserController@login')->name('login');
 Route::post('register', 'API\UserController@register');
@@ -26,7 +27,7 @@ Route::group(['middleware'=>'auth:api'],function(){
 Route::apiResource('details', 'API\UserController');
 });
 Route::group(['middleware'=>'auth:api'],function(){
-Route::apiResource('events', 'EventController',['except' => ['index']]);
+Route::apiResource('events', 'EventController',['except' => ['index','show']]);
 });
 
 Route::apiResource('organisations','ProfileController');

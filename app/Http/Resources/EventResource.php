@@ -27,7 +27,9 @@ class EventResource extends JsonResource
             "date_of_event"=>$this->date_of_event,
             "time"=> $this->time,
             "venue"=>$this->venue,
-            "organiser"=>$this->organiser
+            "organiser"=>$this->organiser,
+            'rating'=>$this->reviews->count()>0? round($this->reviews->sum('star')/$this->reviews->count(),2): "no rating yet",
+            'review'=>route('reviews.index', $this->id)
 
 
         ];
