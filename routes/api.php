@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 
 
 Route::get('/events','EventController@index');
+Route::get('/upcoming_events','EventController@upcoming_events');
 // Route::put('/events/{event}','EventController@update')->name('events.update');
 // Route::delete('/events/{event}','EventController@delete');
 Route::post('login', 'API\UserController@login')->name('login');
@@ -30,3 +31,4 @@ Route::apiResource('events', 'EventController',['except' => ['index']]);
 
 Route::apiResource('organisations','ProfileController');
 Route::get('/users/verify/{token}','API\UserController@verify')->name('verify');
+Route::apiResource('events/{event}/reviews','ReviewsController');

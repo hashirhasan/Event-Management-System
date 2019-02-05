@@ -15,6 +15,13 @@ class EventController extends Controller
     // public function __construct(){
     //     $this->middleware('auth:api')->except('index','show');
     // }
+
+
+
+
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -22,10 +29,18 @@ class EventController extends Controller
      */
     public function index()
     {
+       $event=Event::orderBy('updated_at','desc')->get();
 
+       return EventCollection::collection($event);
 
-        return  EventCollection::collection(Event::all());
     }
+
+
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -35,9 +50,16 @@ class EventController extends Controller
     public function view($id)
     {
         $user=User::findOrFail($id);
-
+        $user->events=Event::orderBy('updated_at','desc')->get();
         return EventCollection::collection($user->events);
     }
+
+
+
+
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -65,12 +87,21 @@ class EventController extends Controller
         }
         $event->description=$request->description;
         $event->time=$request->time;
+        $event->date_of_event=$request->date_of_event;
         $event->venue=$request->venue;
         $event->organiser=$request->organiser;
 
         $event->save();
          return response()->json($event,201) ;
     }
+
+
+
+
+
+
+
+
 
     /**
      * Display the specified resource.
@@ -80,8 +111,17 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
+
         return new EventResource($event);
     }
+
+
+
+
+
+
+
+
 
 
     /**
@@ -105,17 +145,36 @@ class EventController extends Controller
       $file=$request->file('image')->storeAs('upload',$request['image_name']);
 $event->image_name= $request['image_name'];
  $event->image=Storage::url($file);
-     $event->save();
-
         }
         else{
             $request['image_name'] =null;
             $request['image'] ="no file uploaded";
         }
-
+        $event->date_of_event=$request['date_of_event'];
+        $event->save();
       $event->update($request->all());
        return response()->json($event,200);
     }
+
+
+
+
+
+
+
+
+    public function upcoming_events()
+    {
+     $event=Event::where('date_of_event','>',date("Y-m-d",time()))->orderBy('updated_at','desc')->get();
+     return EventCollection::collection($event);
+    }
+
+
+
+
+
+
+
 
     /**
      * Remove the specified resource from storage.

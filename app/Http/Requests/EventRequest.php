@@ -26,6 +26,7 @@ class EventRequest extends FormRequest
         return [
             'title'=>'required|max:255',
             'description'=>'required',
+            'date_of_event'=>'required',
             'time'=>'required',
             'venue'=>'required',
             'organiser'=>'required'

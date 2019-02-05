@@ -14,18 +14,19 @@ class EventCollection extends Resource
      */
     public function toArray($request)
     {
-        
+
         return [
             "id"=>$this->id,
             "user_id"=>$this->user_id,
             "title"=> $this->title,
             "image"=>$this->image,
+            "date_of_event"=>$this->date_of_event,
             "description"=>$this->description,
             "time"=> $this->time,
             "venue"=>$this->venue,
             "organiser"=>$this->organiser
 
         ];
-         
+
     }
 }
