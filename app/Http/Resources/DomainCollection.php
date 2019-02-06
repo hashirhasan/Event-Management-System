@@ -15,8 +15,9 @@ class DomainCollection extends Resource
     public function toArray($request)
     {
         return[
-            " domain"=>$this->domain_name,
-            'link_for_events_of_a_specific_domian'=>route('events.domain_specific',$this->domain_name)
+            "domain"=>$this->domain_name,
+             "id"=>$this->id,
+            'link_for_events_of_a_specific_domian'=>route('events.domain_specific',$this->id)
         ];
     }
 }

@@ -23,8 +23,8 @@ class ProfileResource extends JsonResource
             'total_events'=>$this->events->count(),
             'link'=>[
                 'show_all_events'=>route('events.view',$this->id),
-                'show_upcoming_events'=>route('events.upcoming',$this->id),
-                'show_passed-away_events'=>route('events.passed',$this->id),
+                'show_upcoming_events'=>route('events.upcoming_of_specific_organisation',$this->id),
+                'show_passed-away_events'=>route('events.passed_of_specific_organisation',$this->id),
             ]
         ];
     }

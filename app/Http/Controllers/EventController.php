@@ -56,9 +56,10 @@ class EventController extends Controller
     public function view($id)
     {
         $user=User::findOrFail($id);
-        $user->events=Event::orderBy('updated_at','desc')->get();
+     $user->events=$user->events()->orderBy('updated_at','desc')->get();
         return EventCollection::collection($user->events);
     }
+
 
 
 
@@ -103,6 +104,9 @@ class EventController extends Controller
         $event->save();
          return response()->json($event,201) ;
     }
+
+
+
 
 
 
@@ -182,8 +186,6 @@ $event->image_name= $request['image_name'];
 
 
 
-
-
     public function passed_events()
     {
      $event=Event::where('date_of_event','<',date("Y-m-d",time()))->orderBy('updated_at','desc')->get();
@@ -193,17 +195,59 @@ $event->image_name= $request['image_name'];
 
 
 
-    public function viewdomain()
+
+    public function upcoming_events_of_speific_organisation($id)
     {
-     $domain=Event::select('domain_name')->distinct()->get();
-     return DomainCollection::collection($domain);
 
-
+        $user=User::findOrFail($id);
+        $user->events=$user->events()->where('date_of_event','>',date("Y-m-d",time()))->orderBy('updated_at','desc')->get();
+        return EventCollection::collection($user->events);
     }
 
 
-    public function domain_specific_events(Event $domain)
+
+
+
+
+
+
+   public function passed_events_of_speific_organisation($id)
+   {
+
+    $user=User::findOrFail($id);
+    $user->events=$user->events()->where('date_of_event','<',date("Y-m-d",time()))->orderBy('updated_at','desc')->get();
+    return EventCollection::collection($user->events);
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+    public function viewdomain()
     {
+     $domain=Domain::all();
+     return DomainCollection::collection($domain);
+    }
+
+
+
+
+
+
+
+
+
+
+    public function domain_specific_events(Domain $domain)
+    {
+      $domain=$domain->domain_name;
        $event= Event::where('domain_name',$domain)->get();
        return EventCollection::collection($event);
     }
