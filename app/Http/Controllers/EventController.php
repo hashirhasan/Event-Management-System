@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 use App\User;
 use App\Event;
+use App\Domain;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\EventCollection;
-use App\Http\Resources\EventResource;
 use App\Http\Requests\EventRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\EventResource;
+use App\Http\Resources\EventCollection;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\DomainCollection;
 
 class EventController extends Controller
 {
@@ -77,7 +79,7 @@ class EventController extends Controller
         $event=new Event;
          $event->user_id=$user->id;
         $event->title=$request->title;
-        if($request->hasFile('image'))
+     if($request->hasFile('image'))
         {
          $event->image_name=$request->file('image')->getClientOriginalName();
         $file=$request->file('image')->storeAs('upload',$event->image_name);
@@ -85,10 +87,13 @@ class EventController extends Controller
         $event->image= Storage::url($file);
 
         }
-        else{
+    else{
 
             $event->image="no file uploaded";
+            $event->image_name= null;
         }
+
+        $event->domain_name=$user->domain_name;
         $event->description=$request->description;
         $event->time=$request->time;
         $event->date_of_event=$request->date_of_event;
@@ -188,7 +193,20 @@ $event->image_name= $request['image_name'];
 
 
 
+    public function viewdomain()
+    {
+     $domain=Event::select('domain_name')->distinct()->get();
+     return DomainCollection::collection($domain);
 
+
+    }
+
+
+    public function domain_specific_events(Event $domain)
+    {
+       $event= Event::where('domain_name',$domain)->get();
+       return EventCollection::collection($event);
+    }
 
 
 

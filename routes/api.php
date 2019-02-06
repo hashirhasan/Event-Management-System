@@ -16,7 +16,10 @@ use Illuminate\Http\Request;
 
 
 Route::get('/events','EventController@index');
+
+Route::get('/view_domain','EventController@viewdomain');
 Route::get('/upcoming_events','EventController@upcoming_events')->name('events.upcoming');
+Route::get('/domain_specific_events','EventController@domain_specific_events')->name('events.domain_specific');
 Route::get('/events_passed_away','EventController@passed_events')->name('events.passed');
 Route::get('/events/{event}','EventController@show')->name('events.show');
 // Route::delete('/events/{event}','EventController@delete');

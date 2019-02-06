@@ -20,7 +20,6 @@ class Profilecollection extends JsonResource
             'link'=>[
                 'profile'=>route('organisations.show',$this->id)
             ]
-            
         ];
     }
 }
